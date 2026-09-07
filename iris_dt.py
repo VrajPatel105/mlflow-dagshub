@@ -33,7 +33,7 @@ X_train, X_test, y_train, y_test = train_test_split(
 max_depth = 1
 
 mlflow.set_experiment("iris_dt")
-
+mlflow.autolog()
 # Apply mlflow to train
 with mlflow.start_run():
     dt = DecisionTreeClassifier(max_depth=max_depth)
@@ -44,8 +44,8 @@ with mlflow.start_run():
     cm = confusion_matrix(y_test, y_pred)
 
     # Log metric and parameter
-    mlflow.log_metric("accuracy", accuracy)
-    mlflow.log_param("max_depth", max_depth)
+    # mlflow.log_metric("accuracy", accuracy)
+    # mlflow.log_param("max_depth", max_depth)
 
     # Create and save confusion-matrix plot
     plt.figure(figsize=(7, 5))
@@ -69,22 +69,37 @@ with mlflow.start_run():
     plt.close()
 
     # Log saved image file as an MLflow artifact
-    mlflow.log_artifact(plot_path, artifact_path="plots")
+    # mlflow.log_artifact(plot_path, artifact_path="plots")
 
     # Log the trained model
-    mlflow.sklearn.log_model(
-        sk_model=dt,
-        name="decision_tree_model"
-    )
+    # mlflow.sklearn.log_model(
+    #     sk_model=dt,
+    #     name="decision_tree_model"
+    # )
 
     print(f"Accuracy: {accuracy:.4f}")
 
     # log code
-    mlflow.log_artifact(__file__)
+    # mlflow.log_artifact(__file__)
 
     # log model
-    mlflow.sklearn.log_model(dt, "descision-tree-model")
+    # mlflow.sklearn.log_model(dt, "descision-tree-model")
 
     # set tag
-    mlflow.set_tag('author', 'vraj')
-    mlflow.set_tag('model', 'descision_tree')
+    # mlflow.set_tag('author', 'vraj')
+    # mlflow.set_tag('model', 'descision_tree')
+
+    # logging datasets 
+    train_df = pd.DataFrame(X_train)
+    train_df['variety'] = y_train
+
+    test_df = pd.DataFrame(X_test)
+    test_df['variety'] = y_test
+
+    train_df = mlflow.data.from_pandas(train_df)
+    test_df  = mlflow.data.from_pandas(test_df)
+
+    # mlflow.log_input(train_df, "train data")
+    # mlflow.log_input(test_df, "val data")
+
+    # mlflow autologging
