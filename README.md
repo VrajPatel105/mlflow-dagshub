@@ -1,7 +1,5 @@
 # mlops-mlflow using dagshub with model registry
 
-# MLOps with MLflow and DagsHub
-
 Training and tracking an ML model on the Iris dataset using MLflow, with experiments logged to DagsHub and a model registry for versioning.
 
 ## What's here
